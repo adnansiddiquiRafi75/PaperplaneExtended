@@ -321,13 +321,13 @@ async def text_to_speech(query):
     except RuntimeError:
         await query.edit('Error loading the languages dictionary.')
         return
-    tts = gTTS(message, LANG)
+    tts = gTTS(message, TTS_LANG)
     tts.save("k.mp3")
     with open("k.mp3", "rb") as audio:
         linelist = list(audio)
         linecount = len(linelist)
     if linecount == 1:
-        tts = gTTS(message, LANG)
+        tts = gTTS(message, TTS_LANG)
         tts.save("k.mp3")
     with open("k.mp3", "r"):
         await query.client.send_file(query.chat_id, "k.mp3", voice_note=True)
