@@ -37,7 +37,6 @@ from youtube_dl.utils import (DownloadError, ContentTooShortError,
                               MaxDownloadsReached, PostProcessingError,
                               UnavailableVideoError, XAttrMetadataError)
 from asyncio import sleep
-
 from userbot import CMD_HELP, BOTLOG, BOTLOG_CHATID, YOUTUBE_API_KEY, CHROME_DRIVER, GOOGLE_CHROME_BIN
 from userbot.events import register, errors_handler
 from telethon.tl.types import DocumentAttributeAudio
@@ -71,6 +70,8 @@ async def carbon_api(e):
         pcode = str(textx.message)  # Importing message to module
     code = quote_plus(pcode)  # Converting to urlencoded
     await e.edit("`Processing..\n25%`")
+    if os.path.isfile("./carbon.png"):
+    	os.remove("./carbon.png")
     url = CARBON.format(code=code, lang=CARBONLANG)
     chrome_options = Options()
     chrome_options.add_argument("--headless")
@@ -101,7 +102,8 @@ async def carbon_api(e):
     driver.find_element_by_xpath("//button[contains(text(),'PNG')]").click()
     await e.edit("`Processing..\n75%`")
     # Waiting for downloading
-    sleep(2.5)
+    while not os.path.isfile("./carbon.png"):
+    	await sleep(0.5)
     await e.edit("`Processing..\n100%`")
     file = './carbon.png'
     await e.edit("`Uploading..`")
